@@ -5,17 +5,26 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import uz.muhsinov_dev.mohirdev_mvvm_randomgenerator.databinding.ActivityMainBinding
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding:ActivityMainBinding
+
     private val viewModel : RandomNumberViewModel by viewModels ()
+
+    @Inject
+    lateinit var string:String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.randomNumberTv.text = string
 
         lifecycleScope.launchWhenCreated {
             viewModel.flow.collectLatest {
